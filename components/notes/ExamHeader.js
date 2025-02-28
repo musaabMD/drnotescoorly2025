@@ -465,7 +465,7 @@
 // export default ExamHeader;
 "use client";
 
-import { useState } from "react";
+// Remove the unused useState import
 import { Search, Rows, SquareStack, FileText } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -489,9 +489,6 @@ export default function ExamHeader({
   onFilterChange,
   stats
 }) {
-  // Remove unused state variables
-  // const [showFilters, setShowFilters] = useState(false);
-
   return (
     <>
       <Header />
