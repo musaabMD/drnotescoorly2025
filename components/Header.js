@@ -3,174 +3,146 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
-import ButtonSignin from "./ButtonSignin";
-import logo from "@/app/icon.png";
+import { LogIn, User, Menu, X, Wallet, GraduationCap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import config from "@/config";
 
 const links = [
   {
-    href: "/#pricing",
+    href: "/pricing",
     label: "Pricing",
+    icon: <Wallet className="h-5 w-5 mr-2" />
   },
   {
-    href: "/#testimonials",
-    label: "Reviews",
-  },
-  {
-    href: "/#faq",
-    label: "FAQ",
+    href: "/",
+    label: "Exams",
+    icon: <GraduationCap className="h-5 w-5 mr-2" />
   },
 ];
 
-const cta = <ButtonSignin extraStyle="btn-primary" />;
+// Custom color palette - you can adjust these values to match your theme
+const colors = {
+  primary: "#181818",
+  background: "#F6EFE8",
+  white: "#FFFFFF"
+};
 
-// A header with a logo on the left, links in the center (like Pricing, etc...), and a CTA (like Get Started or Login) on the right.
-// The header is responsive, and on mobile, the links are hidden behind a burger button.
 const Header = () => {
   const searchParams = useSearchParams();
-  const [isOpen, setIsOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // setIsOpen(false) when the route changes (i.e: when the user clicks on a link on mobile)
+  // Close mobile menu when route changes
   useEffect(() => {
-    setIsOpen(false);
+    setMobileMenuOpen(false);
   }, [searchParams]);
 
+  // DrNote Logo SVG Component
+  const DrNoteLogo = () => (
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="40" height="40" rx="8" fill="#007832" />
+      <path d="M8 12C8 10.8954 8.89543 10 10 10H22C27.5228 10 32 14.4772 32 20C32 25.5228 27.5228 30 22 30H10C8.89543 30 8 29.1046 8 28V12Z" fill="white"/>
+      <path d="M14 16V24M14 16H22C23.6569 16 25 17.3431 25 19V21C25 22.6569 23.6569 24 22 24H14V16Z" stroke="#007832" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M26 15L29 15M27.5 10V13.5" stroke="#E8D8CE" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  );
+
   return (
-    <header className="bg-base-200">
-      <nav
-        className="container flex items-center justify-between px-8 py-4 mx-auto"
-        aria-label="Global"
-      >
-        {/* Your logo/name on large screens */}
-        <div className="flex lg:flex-1">
-          <Link
-            className="flex items-center gap-2 shrink-0 "
-            href="/"
-            title={`${config.appName} hompage`}
-          >
-            <Image
-              src={logo}
-              alt={`${config.appName} logo`}
-              className="w-8"
-              placeholder="blur"
-              priority={true}
-              width={32}
-              height={32}
-            />
-            <span className="font-extrabold text-lg">{config.appName}</span>
-          </Link>
+    <header
+      style={{ backgroundColor: colors.primary }}
+      className="text-white sticky top-0 z-50"
+    >
+      <div className="max-w-6xl mx-auto">
+        {/* Desktop Header */}
+        <div className="hidden md:flex justify-between items-center py-3 px-4">
+          <div className="flex items-center gap-2">
+            <Link href="/">
+              <DrNoteLogo />
+            </Link>
+            <Link href="/">
+              <span className="font-bold text-xl">{config.appName}</span>
+            </Link>
+          </div>
+          
+          {/* Navigation Links - Desktop - CENTERED */}
+          <div className="hidden lg:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
+            {links.map((link) => (
+              <Link
+                href={link.href}
+                key={link.href}
+                className="text-white hover:text-white/80 transition-colors flex items-center"
+                title={link.label}
+              >
+                {link.icon}
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" className="text-white hover:bg-white/10">
+              <Link href="/signin" className="flex items-center">
+                <LogIn className="h-5 w-5 mr-2" />
+                Login
+              </Link>
+            </Button>
+            <Button className="bg-white text-green-700 hover:bg-white">
+              <Link href="/signup" className="flex items-center">
+                <User className="h-5 w-5 mr-2" />
+                Sign Up
+              </Link>
+            </Button>
+          </div>
         </div>
-        {/* Burger button to open menu on mobile */}
-        <div className="flex lg:hidden">
+
+        {/* Mobile Header */}
+        <div className="flex md:hidden justify-between items-center py-3 px-4">
+          <div className="flex items-center gap-2">
+            <Link href="/">
+              <DrNoteLogo />
+            </Link>
+            <Link href="/">
+              <span className="font-bold text-lg">{config.appName}</span>
+            </Link>
+          </div>
           <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
-            onClick={() => setIsOpen(true)}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-1 rounded-md hover:bg-white/10"
           >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6 text-base-content"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
-        {/* Your links on large screens */}
-        <div className="hidden lg:flex lg:justify-center lg:gap-12 lg:items-center">
-          {links.map((link) => (
-            <Link
-              href={link.href}
-              key={link.href}
-              className="link link-hover"
-              title={link.label}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-
-        {/* CTA on large screens */}
-        <div className="hidden lg:flex lg:justify-end lg:flex-1">{cta}</div>
-      </nav>
-
-      {/* Mobile menu, show/hide based on menu state. */}
-      <div className={`relative z-50 ${isOpen ? "" : "hidden"}`}>
-        <div
-          className={`fixed inset-y-0 right-0 z-10 w-full px-8 py-4 overflow-y-auto bg-base-200 sm:max-w-sm sm:ring-1 sm:ring-neutral/10 transform origin-right transition ease-in-out duration-300`}
-        >
-          {/* Your logo/name on small screens */}
-          <div className="flex items-center justify-between">
-            <Link
-              className="flex items-center gap-2 shrink-0 "
-              title={`${config.appName} hompage`}
-              href="/"
-            >
-              <Image
-                src={logo}
-                alt={`${config.appName} logo`}
-                className="w-8"
-                placeholder="blur"
-                priority={true}
-                width={32}
-                height={32}
-              />
-              <span className="font-extrabold text-lg">{config.appName}</span>
-            </Link>
-            <button
-              type="button"
-              className="-m-2.5 rounded-md p-2.5"
-              onClick={() => setIsOpen(false)}
-            >
-              <span className="sr-only">Close menu</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden py-3 px-4 space-y-3 border-t border-white/20">
+            {/* Navigation Links - Mobile */}
+            {links.map((link) => (
+              <Button 
+                key={link.href}
+                variant="ghost" 
+                className="text-white hover:bg-white/10 w-full justify-start"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
+                <Link href={link.href} className="flex items-center w-full">
+                  {link.icon}
+                  {link.label}
+                </Link>
+              </Button>
+            ))}
+            
+            <Button variant="ghost" className="text-white hover:bg-white/10 w-full justify-start">
+              <Link href="/signin" className="flex items-center w-full">
+                <LogIn className="h-5 w-5 mr-2" />
+                Login
+              </Link>
+            </Button>
+            <Button className="bg-white text-green-700 hover:bg-white/90 w-full justify-start">
+              <Link href="/signup" className="flex items-center w-full">
+                <User className="h-5 w-5 mr-2" />
+                Sign Up
+              </Link>
+            </Button>
           </div>
-
-          {/* Your links on small screens */}
-          <div className="flow-root mt-6">
-            <div className="py-4">
-              <div className="flex flex-col gap-y-4 items-start">
-                {links.map((link) => (
-                  <Link
-                    href={link.href}
-                    key={link.href}
-                    className="link link-hover"
-                    title={link.label}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            <div className="divider"></div>
-            {/* Your CTA on small screens */}
-            <div className="flex flex-col">{cta}</div>
-          </div>
-        </div>
+        )}
       </div>
     </header>
   );
