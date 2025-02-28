@@ -479,9 +479,6 @@ import {
 } from "@/components/ui/select";
 import Header from "@/components/Header";
 
-// Remove unused imports
-// import { Filter, BookOpen } from "lucide-react";
-
 export default function ExamHeader({
   examName,
   activeView,
@@ -492,7 +489,8 @@ export default function ExamHeader({
   onFilterChange,
   stats
 }) {
-  const [showFilters, setShowFilters] = useState(false);
+  // Remove unused state variables
+  // const [showFilters, setShowFilters] = useState(false);
 
   return (
     <>
