@@ -1389,13 +1389,22 @@
 // }
 
 // Use a server component wrapper with client component for the test page
-import { ClientSuspense } from "@/components/ClientWrapper";
-import TestClient from "@/components/TestClient";
-
+// app/test/page.js
 export default function TestPage() {
   return (
-    <ClientSuspense>
-      <TestClient />
-    </ClientSuspense>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+      <div className="max-w-lg p-8 bg-gray-50 rounded-lg shadow text-center">
+        <h1 className="text-2xl font-bold mb-4">Test Page</h1>
+        <p className="mb-6">This is a static server-rendered test page.</p>
+        <div className="flex justify-center">
+          <a 
+            href="/exams" 
+            className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+          >
+            Go to Exams
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }
