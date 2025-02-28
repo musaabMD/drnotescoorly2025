@@ -1,11 +1,21 @@
 
-import ExamList from '@/components/notes/ExamList'
-import React from 'react'
+// import ExamList from '@/components/notes/ExamList'
+// import React from 'react'
 
-const page = () => {
+// const page = () => {
+//   return (
+//    <ExamList/>
+//   )
+// }
+
+// export default page
+import { ClientSuspense } from "@/components/ClientWrapper";
+import HomeContent from "@/components/HomeContent";
+
+export default function HomePage() {
   return (
-   <ExamList/>
-  )
+    <ClientSuspense>
+      <HomeContent />
+    </ClientSuspense>
+  );
 }
-
-export default page
